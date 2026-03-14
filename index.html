@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ghost Repurpose — One newsletter, five formats</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:           #f9fafb;
+      --bg-card:      #ffffff;
+      --bg-card-alt:  #f3f4f6;
+      --border:       #e5e7eb;
+      --border-mid:   #d1d5db;
+      --text:         #15171a;
+      --text-muted:   #6b7280;
+      --text-dim:     #9ca3af;
+      --accent:       #30cf43;
+      --accent-dark:  #22a832;
+      --accent-light: rgba(48, 207, 67, 0.1);
+      --accent-border: rgba(48, 207, 67, 0.35);
+      --btn-bg:       #15171a;
+      --btn-text:     #ffffff;
+      --error:        #dc2626;
+      --error-bg:     #fef2f2;
+      --error-border: #fecaca;
+      --radius:       8px;
+      --radius-sm:    6px;
+      --shadow:       0 1px 3px rgba(0,0,0,0.06), 0 4px 12px rgba(0,0,0,0.04);
+      --shadow-md:    0 4px 16px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.04);
+      --max-w:        680px;
+      --font:         'Inter', system-ui, -apple-system, sans-serif;
+    }
+
+    html { font-size: 16px; -webkit-font-smoothing: antialiased; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    a { color: var(--text-muted); text-decoration: none; }
+    a:hover { color: var(--text); }
+
+    /* ── Nav ───────────────────────────────────────────── */
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(249,250,251,0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 24px;
+    }
+
+    .nav-inner {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      height: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    .nav-logo .ghost-icon {
+      width: 24px;
+      height: 24px;
+      background: var(--btn-bg);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .nav-link {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-muted);
+      padding: 5px 10px;
+      border-radius: var(--radius-sm);
+      border: 1px solid transparent;
+      text-decoration: none;
+      transition: all 0.15s;
+    }
+
+    .nav-link:hover {
+      border-color: var(--border);
+      background: var(--bg-card);
+      color: var(--text);
+    }
+
+    /* ── Shell ─────────────────────────────────────────── */
+    .shell {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 48px 24px 80px;
+    }
+
+    /* ── Header ────────────────────────────────────────── */
+    .header {
+      margin-bottom: 40px;
+    }
+
+    .header-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent-dark);
+      background: var(--accent-light);
+      border: 1px solid var(--accent-border);
+      padding: 4px 10px;
+      border-radius: 20px;
+      margin-bottom: 16px;
+    }
+
+    .header h1 {
+      font-size: clamp(26px, 5vw, 36px);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.2;
+      color: var(--text);
+      margin-bottom: 12px;
+    }
+
+    .header p {
+      font-size: 15px;
+      color: var(--text-muted);
+      max-width: 520px;
+      line-height: 1.7;
+    }
+
+    /* ── Card ──────────────────────────────────────────── */
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      box-shadow: var(--shadow);
+      margin-bottom: 16px;
+    }
+
+    .card-title {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.09em;
+      color: var(--text-dim);
+      margin-bottom: 20px;
+    }
+
+    /* ── Form ──────────────────────────────────────────── */
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      margin-bottom: 20px;
+    }
+
+    .field:last-child { margin-bottom: 0; }
+
+    .field-label {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text);
+    }
+
+    .field-hint {
+      font-size: 11px;
+      color: var(--text-dim);
+      line-height: 1.4;
+    }
+
+    .optional-tag {
+      color: var(--text-dim);
+      font-weight: 400;
+    }
+
+    input[type="text"],
+    textarea {
+      width: 100%;
+      background: var(--bg);
+      border: 1px solid var(--border-mid);
+      border-radius: var(--radius-sm);
+      color: var(--text);
+      font-family: var(--font);
+      font-size: 14px;
+      padding: 9px 12px;
+      outline: none;
+      transition: border-color 0.15s, box-shadow 0.15s;
+      resize: vertical;
+    }
+
+    textarea { min-height: 160px; line-height: 1.65; }
+
+    input:focus, textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-light);
+    }
+
+    input::placeholder, textarea::placeholder { color: var(--text-dim); }
+
+    /* ── Checkboxes ────────────────────────────────────── */
+    .formats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .format-option {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: all 0.15s;
+      user-select: none;
+    }
+
+    .format-option:hover {
+      border-color: var(--accent-border);
+      background: var(--accent-light);
+    }
+
+    .format-option input[type="checkbox"] {
+      width: 15px;
+      height: 15px;
+      accent-color: var(--accent);
+      flex-shrink: 0;
+      cursor: pointer;
+    }
+
+    .format-option.checked {
+      border-color: var(--accent-border);
+      background: var(--accent-light);
+    }
+
+    .format-icon { font-size: 15px; flex-shrink: 0; }
+
+    .format-label {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text);
+      line-height: 1.3;
+    }
+
+    /* ── Button ────────────────────────────────────────── */
+    .btn-analyse {
+      width: 100%;
+      padding: 14px 24px;
+      background: var(--btn-bg);
+      color: var(--btn-text);
+      border: none;
+      border-radius: var(--radius);
+      font-family: var(--font);
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      cursor: pointer;
+      transition: opacity 0.15s, transform 0.1s;
+      margin-top: 8px;
+    }
+
+    .btn-analyse:hover { opacity: 0.88; }
+    .btn-analyse:active { transform: scale(0.99); }
+    .btn-analyse:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      background: var(--bg);
+      color: var(--text-muted);
+      border: 1px solid var(--border-mid);
+      border-radius: var(--radius-sm);
+      font-family: var(--font);
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .btn-secondary:hover {
+      background: var(--bg-card-alt);
+      color: var(--text);
+    }
+
+    .btn-copy {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 6px 12px;
+      background: var(--bg);
+      color: var(--text-muted);
+      border: 1px solid var(--border-mid);
+      border-radius: var(--radius-sm);
+      font-family: var(--font);
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .btn-copy:hover {
+      background: var(--bg-card-alt);
+      color: var(--text);
+    }
+
+    .btn-copy.copied {
+      color: var(--accent-dark);
+      border-color: var(--accent-border);
+      background: var(--accent-light);
+    }
+
+    /* ── Error ─────────────────────────────────────────── */
+    .error-box {
+      display: none;
+      background: var(--error-bg);
+      border: 1px solid var(--error-border);
+      border-radius: var(--radius-sm);
+      padding: 10px 14px;
+      font-size: 13px;
+      color: var(--error);
+      margin-bottom: 12px;
+    }
+
+    /* ── Loading ───────────────────────────────────────── */
+    .loading {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 48px 24px;
+      color: var(--text-muted);
+      font-size: 14px;
+    }
+
+    .spinner {
+      width: 18px;
+      height: 18px;
+      border: 2px solid var(--border-mid);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 0.75s linear infinite;
+      flex-shrink: 0;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── Output ────────────────────────────────────────── */
+    #output { display: none; }
+
+    .output-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    .output-title {
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-dim);
+    }
+
+    /* ── Tab Nav ───────────────────────────────────────── */
+    .tab-nav {
+      display: flex;
+      gap: 4px;
+      background: var(--bg-card-alt);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 4px;
+      margin-bottom: 16px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .tab-nav::-webkit-scrollbar { display: none; }
+
+    .tab-btn {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 7px 12px;
+      border-radius: 6px;
+      border: none;
+      background: transparent;
+      font-family: var(--font);
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.15s;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .tab-btn:hover { color: var(--text); background: var(--bg-card); }
+
+    .tab-btn.active {
+      background: var(--bg-card);
+      color: var(--text);
+      box-shadow: var(--shadow);
+    }
+
+    .tab-icon { font-size: 13px; }
+
+    /* ── Output Panel ──────────────────────────────────── */
+    .output-panel {
+      display: none;
+    }
+
+    .output-panel.active { display: block; }
+
+    .output-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .output-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg-card-alt);
+    }
+
+    .output-card-label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+    }
+
+    .output-card-body {
+      padding: 20px;
+      font-size: 14px;
+      color: var(--text);
+      line-height: 1.8;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    /* Char count hint for Twitter */
+    .char-hint {
+      padding: 10px 20px;
+      border-top: 1px solid var(--border);
+      font-size: 11px;
+      color: var(--text-dim);
+      background: var(--bg-card-alt);
+    }
+
+    /* ── Divider ───────────────────────────────────────── */
+    .divider {
+      height: 1px;
+      background: var(--border);
+      margin: 32px 0;
+    }
+
+    /* ── Footer ────────────────────────────────────────── */
+    .footer {
+      text-align: center;
+      padding: 32px 24px;
+      font-size: 12px;
+      color: var(--text-dim);
+      border-top: 1px solid var(--border);
+    }
+
+    .footer a { color: var(--text-muted); }
+    .footer a:hover { color: var(--text); }
+
+    /* ── Responsive ────────────────────────────────────── */
+    @media (max-width: 580px) {
+      .shell { padding: 32px 16px 64px; }
+      .formats-grid { grid-template-columns: 1fr; }
+      .header h1 { font-size: 26px; }
+      .tab-btn { font-size: 11px; padding: 6px 10px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="#" class="nav-logo">
+      <div class="ghost-icon">✦</div>
+      Ghost Repurpose
+    </a>
+    <div class="nav-links">
+      <a href="https://sinkrest.github.io/romans-lab" class="nav-link">⚗️ Roman's Lab</a>
+      <a href="https://github.com/sinkrest/ghost-repurpose" target="_blank" class="nav-link">GitHub</a>
+      <a href="https://romanmartins.com" target="_blank" class="nav-link">romanmartins.com</a>
+    </div>
+  </div>
+</nav>
+
+<div class="shell">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="header-tag">
+      <span>●</span> Ghost Creator Tool · Roman Martins
+    </div>
+    <h1>One newsletter. Five formats.</h1>
+    <p>Paste your Ghost post. Get a Twitter thread, LinkedIn post, podcast show notes, re-engagement email, and a key takeaway — all in your voice. Stop rewriting. Start republishing.</p>
+  </div>
+
+  <!-- Error -->
+  <div class="error-box" id="errorBox"></div>
+
+  <!-- Form card -->
+  <div class="card">
+    <div class="card-title">Your newsletter post</div>
+
+    <div class="field">
+      <label class="field-label" for="postContent">Newsletter post content <span style="color:var(--error);font-size:11px;">required</span></label>
+      <textarea id="postContent" placeholder="Paste the full text of your latest Ghost issue here. The more complete the post, the better each format will capture your voice and ideas."></textarea>
+    </div>
+
+    <div class="field">
+      <label class="field-label" for="pubName">Publication name <span class="optional-tag">(optional)</span></label>
+      <input type="text" id="pubName" placeholder="e.g. The Dispatch, Finimize, Dense Discovery">
+    </div>
+
+    <div class="field">
+      <label class="field-label" for="voiceDesc">Your voice <span class="optional-tag">(optional but recommended)</span></label>
+      <input type="text" id="voiceDesc" placeholder="e.g. Direct and data-driven. No marketing speak. Readers are senior operators.">
+      <span class="field-hint">This is the most important input for sounding like you, not like AI.</span>
+    </div>
+  </div>
+
+  <!-- Format selection -->
+  <div class="card">
+    <div class="card-title">Output formats</div>
+    <div class="formats-grid">
+      <label class="format-option checked" id="opt-thread">
+        <input type="checkbox" name="format" value="thread" checked onchange="toggleFormat(this)">
+        <span class="format-icon">𝕏</span>
+        <span class="format-label">Twitter / X Thread</span>
+      </label>
+      <label class="format-option checked" id="opt-linkedin">
+        <input type="checkbox" name="format" value="linkedin" checked onchange="toggleFormat(this)">
+        <span class="format-icon">in</span>
+        <span class="format-label">LinkedIn Post</span>
+      </label>
+      <label class="format-option checked" id="opt-podcast">
+        <input type="checkbox" name="format" value="podcast" checked onchange="toggleFormat(this)">
+        <span class="format-icon">🎙</span>
+        <span class="format-label">Podcast Show Notes</span>
+      </label>
+      <label class="format-option checked" id="opt-reengagement">
+        <input type="checkbox" name="format" value="reengagement" checked onchange="toggleFormat(this)">
+        <span class="format-icon">✉</span>
+        <span class="format-label">Re-engagement Email</span>
+      </label>
+      <label class="format-option checked" id="opt-summary">
+        <input type="checkbox" name="format" value="summary" checked onchange="toggleFormat(this)">
+        <span class="format-icon">◈</span>
+        <span class="format-label">Key Takeaway Summary</span>
+      </label>
+    </div>
+  </div>
+
+  <button class="btn-analyse" id="repurposeBtn" onclick="repurpose()">Repurpose →</button>
+
+  <!-- Loading -->
+  <div class="loading" id="loading">
+    <div class="spinner"></div>
+    <span>Repurposing in your voice…</span>
+  </div>
+
+  <!-- Output -->
+  <div id="output">
+    <div class="divider"></div>
+
+    <div class="output-header">
+      <div class="output-title">Your formats</div>
+      <button class="btn-secondary" onclick="resetForm()">← Start over</button>
+    </div>
+
+    <!-- Tab nav -->
+    <div class="tab-nav" id="tabNav">
+      <button class="tab-btn active" data-panel="panel-thread" onclick="switchTab(this)">
+        <span class="tab-icon">𝕏</span> Thread
+      </button>
+      <button class="tab-btn" data-panel="panel-linkedin" onclick="switchTab(this)">
+        <span class="tab-icon">in</span> LinkedIn
+      </button>
+      <button class="tab-btn" data-panel="panel-podcast" onclick="switchTab(this)">
+        <span class="tab-icon">🎙</span> Podcast
+      </button>
+      <button class="tab-btn" data-panel="panel-reengagement" onclick="switchTab(this)">
+        <span class="tab-icon">✉</span> Re-engage
+      </button>
+      <button class="tab-btn" data-panel="panel-summary" onclick="switchTab(this)">
+        <span class="tab-icon">◈</span> Summary
+      </button>
+    </div>
+
+    <!-- Thread panel -->
+    <div class="output-panel active" id="panel-thread">
+      <div class="output-card">
+        <div class="output-card-header">
+          <div class="output-card-label"><span>𝕏</span> Twitter / X Thread</div>
+          <button class="btn-copy" onclick="copyPanel('thread-content', this)">Copy</button>
+        </div>
+        <div class="output-card-body" id="thread-content"></div>
+        <div class="char-hint">Each tweet should be under 280 characters. Thread format: numbered tweets (1/, 2/, etc.)</div>
+      </div>
+    </div>
+
+    <!-- LinkedIn panel -->
+    <div class="output-panel" id="panel-linkedin">
+      <div class="output-card">
+        <div class="output-card-header">
+          <div class="output-card-label"><span>in</span> LinkedIn Post</div>
+          <button class="btn-copy" onclick="copyPanel('linkedin-content', this)">Copy</button>
+        </div>
+        <div class="output-card-body" id="linkedin-content"></div>
+        <div class="char-hint">Optimised for LinkedIn: strong first line, short paragraphs, no hashtags. Paste links in first comment.</div>
+      </div>
+    </div>
+
+    <!-- Podcast panel -->
+    <div class="output-panel" id="panel-podcast">
+      <div class="output-card">
+        <div class="output-card-header">
+          <div class="output-card-label"><span>🎙</span> Podcast Show Notes</div>
+          <button class="btn-copy" onclick="copyPanel('podcast-content', this)">Copy</button>
+        </div>
+        <div class="output-card-body" id="podcast-content"></div>
+        <div class="char-hint">Written in spoken-word format. Adapt timing and transitions to your recording style.</div>
+      </div>
+    </div>
+
+    <!-- Re-engagement panel -->
+    <div class="output-panel" id="panel-reengagement">
+      <div class="output-card">
+        <div class="output-card-header">
+          <div class="output-card-label"><span>✉</span> Re-engagement Email</div>
+          <button class="btn-copy" onclick="copyPanel('reengagement-content', this)">Copy</button>
+        </div>
+        <div class="output-card-body" id="reengagement-content"></div>
+        <div class="char-hint">For subscribers who didn't open the original. Subject line is on the first line.</div>
+      </div>
+    </div>
+
+    <!-- Summary panel -->
+    <div class="output-panel" id="panel-summary">
+      <div class="output-card">
+        <div class="output-card-header">
+          <div class="output-card-label"><span>◈</span> Key Takeaway Summary</div>
+          <button class="btn-copy" onclick="copyPanel('summary-content', this)">Copy</button>
+        </div>
+        <div class="output-card-body" id="summary-content"></div>
+        <div class="char-hint">Under 100 words. Use as a preview in your Ghost header, social bio, or post header.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    Built by <a href="https://romanmartins.com" target="_blank">Roman Martins</a> using Claude API ·
+    <a href="https://github.com/sinkrest/ghost-repurpose" target="_blank">View on GitHub</a> ·
+    <a href="https://sinkrest.github.io/romans-lab">⚗️ Roman's Lab</a>
+  </div>
+
+</div>
+
+<script>
+  const SYSTEM_PROMPT = `You are a content repurposing assistant for independent newsletter creators who publish on Ghost. Your job is to transform their newsletter post into multiple formats while strictly preserving their voice, tone, and perspective — never sanitising, never genericising, never making it sound like marketing copy.
+
+The creator's voice description (if provided) is the highest-priority constraint. Honour it exactly. If they say "direct and data-driven, no marketing speak" — do not use words like "exciting", "thrilled", "groundbreaking" or any engagement bait.
+
+You must return ONLY a valid JSON object with no wrapper text, no markdown code fences, no preamble. Use this exact schema:
+
+{
+  "thread": "A Twitter/X thread. First tweet is a standalone hook (max 280 chars, must work without reading the rest). Subsequent tweets numbered 2/, 3/, etc. Maximum 8 tweets. Each tweet under 280 chars. The thread builds to a conclusion — it doesn't just list points. Separate tweets with a blank line.",
+  "linkedin": "A LinkedIn post. First line is a standalone hook — not a question, not 'I'm excited', not a cliche. Then 3-5 short paragraphs separated by blank lines. Max 1300 characters total. No hashtags. No 'What do you think?' or 'Agree?' CTA. The voice must match the original.",
+  "podcast": "Podcast show notes in spoken-word format. Opens with what listeners will learn from this episode. Then 3-5 key talking points written as natural speech prompts (not bullet headers — full phrases a host would actually say). Ends with a CTA to subscribe to the newsletter.",
+  "reengagement": "A re-engagement email for subscribers who didn't open the original issue. First line is the subject, prefixed exactly as 'Subject: '. Then a blank line. Then the email body — 3-4 sentences max. Lead with the single most valuable insight from the post. End with a CTA to read the full issue.",
+  "summary": "A one-paragraph key takeaway summary, strictly under 100 words. Written in first person as if the creator is telling a friend the most important thing to take away from this issue. Preserve their voice completely."
+}
+
+If a format was not requested, set its value to null in the JSON.
+Return only the JSON object. Nothing else.`;
+
+  function getSelectedFormats() {
+    return Array.from(document.querySelectorAll('input[name="format"]:checked'))
+      .map(cb => cb.value);
+  }
+
+  function toggleFormat(cb) {
+    const label = cb.closest('.format-option');
+    if (cb.checked) {
+      label.classList.add('checked');
+    } else {
+      label.classList.remove('checked');
+    }
+  }
+
+  function buildUserPrompt() {
+    const post = document.getElementById('postContent').value.trim();
+    const name = document.getElementById('pubName').value.trim();
+    const voice = document.getElementById('voiceDesc').value.trim();
+    const formats = getSelectedFormats();
+
+    let prompt = `Newsletter post to repurpose:\n\n${post}`;
+    if (name) prompt += `\n\nPublication name: ${name}`;
+    if (voice) prompt += `\n\nCreator's voice: ${voice}`;
+
+    const allFormats = ['thread', 'linkedin', 'podcast', 'reengagement', 'summary'];
+    const skipped = allFormats.filter(f => !formats.includes(f));
+    if (skipped.length > 0) {
+      prompt += `\n\nSet these format keys to null (not requested): ${skipped.join(', ')}`;
+    }
+
+    return prompt;
+  }
+
+  function renderOutput(data) {
+    const formatMap = {
+      thread: 'thread-content',
+      linkedin: 'linkedin-content',
+      podcast: 'podcast-content',
+      reengagement: 'reengagement-content',
+      summary: 'summary-content'
+    };
+
+    for (const [key, elId] of Object.entries(formatMap)) {
+      const el = document.getElementById(elId);
+      el.textContent = data[key] || '(Not generated — format was not selected)';
+    }
+
+    // Show/hide tabs based on selected formats
+    const selected = getSelectedFormats();
+    const tabBtns = document.querySelectorAll('.tab-btn');
+    let firstVisible = null;
+
+    tabBtns.forEach(btn => {
+      const panel = btn.dataset.panel;
+      const format = panel.replace('panel-', '');
+      const visible = selected.includes(format);
+      btn.style.display = visible ? '' : 'none';
+      if (visible && !firstVisible) firstVisible = btn;
+    });
+
+    if (firstVisible) {
+      switchTab(firstVisible);
+    }
+  }
+
+  function switchTab(btn) {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.output-panel').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(btn.dataset.panel).classList.add('active');
+  }
+
+  async function copyPanel(elId, btn) {
+    const text = document.getElementById(elId).textContent;
+    try {
+      await navigator.clipboard.writeText(text);
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(() => {
+        btn.textContent = 'Copy';
+        btn.classList.remove('copied');
+      }, 2000);
+    } catch {
+      btn.textContent = 'Failed';
+      setTimeout(() => { btn.textContent = 'Copy'; }, 2000);
+    }
+  }
+
+  async function repurpose() {
+    const post = document.getElementById('postContent').value.trim();
+    const errorBox = document.getElementById('errorBox');
+    errorBox.style.display = 'none';
+
+    if (!post) {
+      errorBox.textContent = 'Please paste your newsletter post before repurposing.';
+      errorBox.style.display = 'block';
+      return;
+    }
+
+    const formats = getSelectedFormats();
+    if (formats.length === 0) {
+      errorBox.textContent = 'Please select at least one output format.';
+      errorBox.style.display = 'block';
+      return;
+    }
+
+    const btn = document.getElementById('repurposeBtn');
+    const loading = document.getElementById('loading');
+    const output = document.getElementById('output');
+
+    btn.disabled = true;
+    btn.textContent = 'Repurposing…';
+    loading.style.display = 'flex';
+    output.style.display = 'none';
+
+    const userPrompt = buildUserPrompt();
+
+    try {
+      const response = await fetch('/api/claude', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          system: SYSTEM_PROMPT,
+          messages: [{ role: 'user', content: userPrompt }],
+          max_tokens: 4000
+        })
+      });
+
+      if (!response.ok) {
+        const err = await response.json().catch(() => ({}));
+        throw new Error(err?.error || `API error ${response.status}`);
+      }
+
+      const data = await response.json();
+      const rawText = data.content[0].text;
+
+      let parsed;
+      try {
+        // Strip markdown code fences if model wraps output
+        const cleaned = rawText.replace(/^```json\s*/i, '').replace(/```\s*$/, '').trim();
+        parsed = JSON.parse(cleaned);
+      } catch {
+        throw new Error('Repurposing returned an unexpected format. Try again — this is usually a one-time issue.');
+      }
+
+      renderOutput(parsed);
+
+      output.style.display = 'block';
+      output.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+    } catch (err) {
+      errorBox.textContent = `Error: ${err.message || 'Something went wrong. Please try again.'}`;
+      errorBox.style.display = 'block';
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'Repurpose →';
+      loading.style.display = 'none';
+    }
+  }
+
+  function resetForm() {
+    document.getElementById('output').style.display = 'none';
+    document.getElementById('errorBox').style.display = 'none';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+</script>
+
+</body>
+</html>
