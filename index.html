@@ -91,9 +91,7 @@
       color: #ffffff;
     }
 
-    /* Hide own nav when embedded inside Roman's Lab iframe */
-    .in-iframe .nav { display: none; }
-    .in-iframe .shell { padding-top: 32px; }
+
 
     .nav-links {
       display: flex;
@@ -534,7 +532,8 @@
       Ghost Repurpose
     </a>
     <div class="nav-links">
-      <a href="https://sinkrest.github.io/romans-lab" class="nav-link">⚗️ Roman's Lab</a>
+
+      <a href="https://sinkrest.github.io/romans-lab" class="nav-link">Roman's Lab</a>
       <a href="https://github.com/sinkrest/ghost-repurpose" target="_blank" class="nav-link">GitHub</a>
       <a href="https://romanmartins.com" target="_blank" class="nav-link">romanmartins.com</a>
     </div>
@@ -899,10 +898,7 @@ Return only the JSON object. Nothing else.`;
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  // Hide own nav when embedded inside Roman's Lab iframe
-  if (window.self !== window.top) {
-    document.body.classList.add('in-iframe');
-  }
+
 </script>
 
 </body>
